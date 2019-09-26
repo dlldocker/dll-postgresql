@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+    #  Create a service named db.
+    pgsql:
+        build : ./ql_master # 使用Dockerfile文件
+        #   Give the container the name my_postgres. You can changes to something else.
+        container_name: "QL_master"
+        restart: always
+        privileged: true  #解决权限
+        #   Setup the username, password, and database name. You can changes these values.
+        environment:
+            POSTGRES_DB: pgdb
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: pq123456
+        #   Maps port 54320 (localhost) to port 5432 on the container. You can change the ports to fix your needs.
+        ports:
+            - "5432:5432"
+        #   Set a volume some that database is not lost after shutting down the container.
+        #   I used the name postgres-data but you can changed it to something else.
+        volumes:
+            - $PWD/ql_master/data:/var/lib/postgresql/data
+        networks:
+            - pgsql-net # 加入网络
+
+    pgadmin4:
+        build : ./ql_admin # 使用Dockerfile文件
+        container_name: "QL_admin"
+        ports:
+            - 8001:80
+        environment:
+            PGADMIN_DEFAULT_EMAIL: liuchengbin@126.com
+            PGADMIN_DEFAULT_PASSWORD: 123456
+        networks:
+            - pgsql-net # 加入网络
+        depends_on:
+            - pgsql
+
+networks: # 创建网络
+  pgsql-net:
+    driver: bridge

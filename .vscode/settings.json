@@ -1,0 +1,15 @@
+{
+    "sqltools.connections": [
+        {
+            "database": "pgdb",
+            "dialect": "PostgreSQL",
+            "isActive": true,
+            "isConnected": true,
+            "name": "pqsql",
+            "password": "pq123456",
+            "port": 5432,
+            "server": "localhost",
+            "username": "root"
+        }
+    ]
+}
