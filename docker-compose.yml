@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 
 services:
     #  Create a service named db.
@@ -21,21 +21,21 @@ services:
         volumes:
             - $PWD/ql_master/data:/var/lib/postgresql/data
         networks:
-            - pgsql-net # 加入网络
+            - db-pgsql-net # 加入网络
 
     pgadmin4:
         build : ./ql_admin # 使用Dockerfile文件
         container_name: "QL_admin"
         ports:
-            - 8001:80
+            - 54320:80
         environment:
             PGADMIN_DEFAULT_EMAIL: liuchengbin@126.com
             PGADMIN_DEFAULT_PASSWORD: 123456
-        networks:
-            - pgsql-net # 加入网络
         depends_on:
             - pgsql
-
+        networks:
+            - db-pgsql-net # 加入网络
 networks: # 创建网络
-  pgsql-net:
-    driver: bridge
+  db-pgsql-net:
+    name:
+        db-pgsql-net
